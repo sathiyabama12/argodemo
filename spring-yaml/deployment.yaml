@@ -1,16 +1,43 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-boot-example
+  name: nginx-1
 spec:
-  replicas: 3
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
   template:
     metadata:
       labels:
-        app: spring-boot-example
+        app: my-app
+        version: "v1"
     spec:
       containers:
-        - name: spring-boot-example
-          image: 'gcr.io/fleet-resolver-237016/spring-boot-example:v1'
-          ports:
-            - containerPort: 8080
+      - image: nginx:1.21
+        name: my-app
+        ports:
+          - containerPort: 8080
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-1
+  labels:
+    name: my-app
+    version: "v1"
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: my-app
+    version: "v1"
+  type: NodePort
+
