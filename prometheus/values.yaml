@@ -1355,9 +1355,7 @@ serverFiles:
       - job_name: argocd-dex-server
         static_configs:
           - targets: [argocddexserver.argocd.svc.cluster.local:5557]
-#       - job_name: argocd-server
-#         static_configs:
-#           - targets: [argocdreposervermetricsprom.argocd.svc.cluster.local:80]
+          
       # A scrape configuration for running Prometheus on a Kubernetes cluster.
       # This uses separate scrape configs for cluster components (i.e. API server, node)
       # and services to allow each to use different authentication configs.
